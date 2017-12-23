@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-class Station {
+public class Station {
     private long stationId;
     private String name;
     private boolean hdEnabled;
