@@ -1,5 +1,7 @@
 package com.station.station;
 
+import com.station.station.exceptions.DuplicateNameException;
+import com.station.station.exceptions.StationNotFoundException;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.junit.After;
 import org.junit.Test;
@@ -45,13 +47,13 @@ public class StationApplicationTests {
         assertEquals(0, stationList.size());
     }
 
-    @Test(expected = NotFoundException.class)
-    public void testNotFoundFind() {
+    @Test(expected = StationNotFoundException.class)
+    public void testNotFoundFindStation() {
         stationService.findStation(1);
     }
 
-    @Test(expected = NotFoundException.class)
-    public void testNotFoundUpdaet() {
+    @Test(expected = StationNotFoundException.class)
+    public void testNotFoundUpdateStation() {
         stationService.updateStation(Station.builder().stationId(1).build());
     }
 
@@ -67,5 +69,25 @@ public class StationApplicationTests {
         result = stationService.findHdEnabledStations();
         assertEquals(1, result.size());
         assertEquals(true, result.get(0).isHdEnabled());
+    }
+
+    @Test
+    public void testFindByName() {
+        Station station = Station.builder().name("CaseInsensitive").build();
+        stationService.createStation(station);
+        Station result = stationService.findByName("caseinsENSITIVE");
+        assertEquals("CaseInsensitive", result.getName());
+    }
+
+    @Test(expected = StationNotFoundException.class)
+    public void testStationNameNotFound() {
+        stationService.findByName("not found");
+    }
+
+    @Test(expected = DuplicateNameException.class)
+    public void testCreateSameName() {
+        String name = "test";
+        stationService.createStation(Station.builder().name(name).build());
+        stationService.createStation(Station.builder().name(name).build());
     }
 }

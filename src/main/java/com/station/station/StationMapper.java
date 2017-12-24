@@ -16,6 +16,9 @@ public interface StationMapper {
     @Select("select * from station where hd_enabled = true")
     List<Station> findHdEnabledStations();
 
+    @Select("select * from station where lower(name) like lower(#{name})")
+    Station findByName(String stationName);
+
     @Select("select * from station where station_id = #{stationId}")
     Station find(long stationId);
 

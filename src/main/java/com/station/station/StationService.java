@@ -1,5 +1,7 @@
 package com.station.station;
 
+import com.station.station.exceptions.DuplicateNameException;
+import com.station.station.exceptions.StationNotFoundException;
 import lombok.SneakyThrows;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +15,10 @@ public class StationService {
     @Autowired
     StationMapper mapper;
 
-    @SneakyThrows
     public Station findStation(long stationId) {
         Station station = mapper.find(stationId);
         if(station == null) {
-            throw new NotFoundException(String.format("Station with id:%d does no exist", stationId));
+            throw new StationNotFoundException(stationId);
         }
         return station;
     }
@@ -27,6 +28,10 @@ public class StationService {
     }
 
     public void createStation(Station station) {
+        Station existingStation = mapper.findByName(station.getName());
+        if(existingStation != null) {
+            throw new DuplicateNameException(existingStation.getName());
+        }
         mapper.insertStation(station);
     }
 
@@ -34,16 +39,23 @@ public class StationService {
         mapper.removeStation(stationId);
     }
 
-    @SneakyThrows
     public void updateStation(Station station) {
         Station oldStation = mapper.find(station.getStationId());
         if(oldStation == null) {
-            throw new NotFoundException(String.format("Station with id:%d does no exist", station.getStationId()));
+            throw new StationNotFoundException(station.getStationId());
         }
         mapper.updateStation(station);
     }
 
     public List<Station> findHdEnabledStations() {
         return mapper.findHdEnabledStations();
+    }
+
+    public Station findByName(String stationName) {
+        Station station = mapper.findByName(stationName);
+        if(station == null) {
+            throw new StationNotFoundException(stationName);
+        }
+        return mapper.findByName(stationName);
     }
 }
