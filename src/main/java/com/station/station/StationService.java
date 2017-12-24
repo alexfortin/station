@@ -42,4 +42,8 @@ public class StationService {
         }
         mapper.updateStation(station);
     }
+
+    public List<Station> findHdEnabledStations() {
+        return mapper.findHdEnabledStations();
+    }
 }

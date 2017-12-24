@@ -13,6 +13,9 @@ public interface StationMapper {
     @Select("select * from station")
     List<Station> findAll();
 
+    @Select("select * from station where hd_enabled = true")
+    List<Station> findHdEnabledStations();
+
     @Select("select * from station where station_id = #{stationId}")
     Station find(long stationId);
 

@@ -2,7 +2,6 @@ package com.station.station;
 
 import org.apache.ibatis.javassist.NotFoundException;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +53,19 @@ public class StationApplicationTests {
     @Test(expected = NotFoundException.class)
     public void testNotFoundUpdaet() {
         stationService.updateStation(Station.builder().stationId(1).build());
+    }
+
+    @Test
+    public void testHdEnabled() {
+        Station station = Station.builder().hdEnabled(false).build();
+        stationService.createStation(station);
+        List<Station> result = stationService.findHdEnabledStations();
+        assertEquals(0, result.size());
+
+        Station hdEnabledStation =  Station.builder().hdEnabled(true).build();
+        stationService.createStation(hdEnabledStation);
+        result = stationService.findHdEnabledStations();
+        assertEquals(1, result.size());
+        assertEquals(true, result.get(0).isHdEnabled());
     }
 }
