@@ -12,6 +12,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
+apply plugin: "jacoco"
 
 group = 'com.station'
 version = '0.0.1-SNAPSHOT'

@@ -2,7 +2,6 @@ package com.station.station;
 
 import com.station.station.exceptions.DuplicateNameException;
 import com.station.station.exceptions.StationNotFoundException;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

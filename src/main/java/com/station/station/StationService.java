@@ -2,8 +2,6 @@ package com.station.station;
 
 import com.station.station.exceptions.DuplicateNameException;
 import com.station.station.exceptions.StationNotFoundException;
-import lombok.SneakyThrows;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
